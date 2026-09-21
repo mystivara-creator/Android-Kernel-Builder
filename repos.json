@@ -9,7 +9,7 @@
     "withKernelSU": true,
     "toolchains": [
       {
-        "repo": "https://android.googlesource.com/prebuilts/gas/linux-x86/platform/",
+        "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",
         "branch": "master",
         "name": "gas"
       },
