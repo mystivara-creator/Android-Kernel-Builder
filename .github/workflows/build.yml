@@ -124,13 +124,12 @@ jobs:
             echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
           fi
 
-      - name: "👍 Make defconfig"
+       - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
+        env:
+          args: ${{ steps.generate-args.outputs.args }}
         run: |
-          echo "=== BERIKUT ADALAH DAFTAR FILE DEFCONFIG YANG TERSEDIA ==="
-          ls -la arch/arm64/configs/
-          echo "========================================================"
-          make ${{ steps.generate-args.outputs.args }} ${{ env.DEFCONFIG_NAME }}
+          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}
 
 
       - name: "💛 Upload Image"
