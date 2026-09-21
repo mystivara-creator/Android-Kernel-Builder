@@ -1,31 +1,30 @@
-[  {
+[
+  {
     "kernelSource": {
       "name": "Mystivara-KernelSU",
-      "repo": "https://github.com/micode/xiaomi_kernel_opensource",
+      "repo": "https://github.com",
       "branch": "kunzite-v-oss",
       "device": "kunzite"
     },
-    "withKernelSU": true,
     "toolchains": [
       {
-        "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",
-        "branch": "master",
-        "name": "gas"
+        "name": "clang",
+        "repo": "https://gitlab.com",
+        "branch": "11"
       },
       {
-        "repo": "https://gitlab.com/ThankYouMario/android_prebuilts_clang-standalone/",
-        "branch": "11",
-        "name": "clang"
+        "name": "gas",
+        "repo": "https://googlesource.com",
+        "branch": "master"
       }
     ],
     "params": {
       "ARCH": "arm64",
-      "CROSS_COMPILE": "aarch64-linux-gnu-",
-      "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-",
-      "CROSS_COMPILE_COMPAT": "arm-linux-gnueabi-",
+      "CC": "clang",
       "CLANG_TRIPLE": "aarch64-linux-gnu-",
-      "AR": "",
-      "CC": "clang"
-    }
+      "CROSS_COMPILE": "aarch64-linux-gnu-",
+      "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-"
+    },
+    "withKernelSU": true
   }
 ]
