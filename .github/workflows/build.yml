@@ -126,11 +126,12 @@ jobs:
 
       - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
-        env:
-          args: ${{ steps.generate-args.outputs.args }}
         run: |
-          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}
-
+          if [ -f "./arch/arm64/configs/gki_defconfig" ]; then
+            make ${{ steps.generate-args.outputs.args }} gki_defconfig
+          else
+            make ${{ steps.generate-args.outputs.args }} ${{ env.DEFCONFIG_NAME }}
+          fi
 
       - name: "🎶 Build kernel"
         working-directory: ./${{ env.kernelDir }}
