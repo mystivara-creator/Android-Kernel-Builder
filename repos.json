@@ -1,6 +1,6 @@
 [  {
     "kernelSource": {
-      "name": "miku-KernelSU",
+      "name": "Mystivara-KernelSU",
       "repo": "https://github.com/MiCode/kernel_devicetree",
       "branch": "kunzite-v-oss",
       "device": "kunzite"
