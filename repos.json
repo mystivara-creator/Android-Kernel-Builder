@@ -27,9 +27,9 @@
       "CLANG_TRIPLE": "aarch64-linux-gnu-",
       "AR": "llvm-ar",
       "CC": "clang",
-      "LOCALVERSION": "Nightmare-1.0",
+      "LOCALVERSION": "Nightmare-CORE-1.0 Beta",
       "KBUILD_BUILD_USER": "mystivara",
-      "KBUILD_BUILD_HOST": "github-actions"
+      "KBUILD_BUILD_HOST": "GitHub"
     }
   }
 ]
