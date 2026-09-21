@@ -116,7 +116,7 @@ jobs:
         working-directory: ./${{ env.kernelDir }}
         if: ${{ env.withKernelSU == 'true' }}
         run: |
-          git clone https://github.com drivers/kernelsu --depth=1
+          git clone "https://github.com" drivers/kernelsu --depth=1
           
           if ! grep -q "kernelsu" drivers/Kconfig; then
             echo 'source "drivers/kernelsu/Kconfig"' >> drivers/Kconfig
@@ -125,12 +125,11 @@ jobs:
             echo 'obj-y += kernelsu/' >> drivers/Makefile
           fi
 
-          mkdir -p ./arch/arm64/configs
-          touch ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
-
-          echo -e "\nCONFIG_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
-          echo -e "\nCONFIG_HAVE_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
-          echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+          if [ -f "./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}" ]; then
+            echo -e "\nCONFIG_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+            echo -e "\nCONFIG_HAVE_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+            echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+          fi
 
       - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
