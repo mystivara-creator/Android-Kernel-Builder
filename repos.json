@@ -1,9 +1,9 @@
 [  {
     "kernelSource": {
       "name": "miku-KernelSU",
-      "repo": "https://github.com/PhamtomK12/kernel_xiaomi_odin",
-      "branch": "TDA",
-      "device": "odin"
+      "repo": "https://github.com/MiCode/kernel_devicetree",
+      "branch": "kunzite-v-oss",
+      "device": "kunzite"
     },
     "withKernelSU": true,
     "toolchains": [
