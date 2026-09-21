@@ -130,7 +130,6 @@ jobs:
           echo "=== BERIKUT ADALAH DAFTAR FILE DEFCONFIG YANG VALID ==="
           ls -la arch/arm64/configs/
           echo "========================================================"
-          make ${{ steps.generate-args.outputs.args }} ${{ env.DEFCONFIG_NAME }}
 
       - name: "🎶 Build kernel"
         working-directory: ./${{ env.kernelDir }}
