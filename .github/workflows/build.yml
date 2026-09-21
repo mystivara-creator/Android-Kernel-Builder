@@ -118,10 +118,16 @@ jobs:
         run: |
           curl -LSs "https://githubusercontent.com" | bash -s main
           
-          if [ -f "./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}" ]; then
-            echo -e "\nCONFIG_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
-            echo -e "\nCONFIG_HAVE_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
-            echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+          if [ -f "./arch/arm64/configs/gki_defconfig" ]; then
+            TARGET_CONF="./arch/arm64/configs/gki_defconfig"
+          else
+            TARGET_CONF="./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}"
+          fi
+
+          if [ -f "$TARGET_CONF" ]; then
+            echo -e "\nCONFIG_KPROBES=y" >> $TARGET_CONF
+            echo -e "\nCONFIG_HAVE_KPROBES=y" >> $TARGET_CONF
+            echo -e "\nCONFIG_KPROBE_EVENTS=y" >> $TARGET_CONF
           fi
 
       - name: "👍 Make defconfig"
