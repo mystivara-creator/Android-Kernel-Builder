@@ -116,7 +116,7 @@ jobs:
         working-directory: ./${{ env.kernelDir }}
         if: ${{ env.withKernelSU == 'true' }}
         run: |
-          git clone "https://github.com" drivers/kernelsu --depth=1
+          git clone "https://github.com drivers/kernelsu --depth=1"
           
           if ! grep -q "kernelsu" drivers/Kconfig; then
             echo 'source "drivers/kernelsu/Kconfig"' >> drivers/Kconfig
