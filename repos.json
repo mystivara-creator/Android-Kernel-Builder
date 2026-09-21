@@ -6,25 +6,27 @@
       "branch": "kunzite-v-oss",
       "device": "kunzite"
     },
+    "withKernelSU": true,
     "toolchains": [
       {
-        "name": "clang",
-        "repo": "https://gitlab.com",
-        "branch": "11"
+        "repo": "https://googlesource.com",
+        "branch": "master",
+        "name": "gas"
       },
       {
-        "name": "gas",
-        "repo": "https://googlesource.com",
-        "branch": "master"
+        "repo": "https://gitlab.com",
+        "branch": "11",
+        "name": "clang"
       }
     ],
     "params": {
       "ARCH": "arm64",
-      "CC": "clang",
-      "CLANG_TRIPLE": "aarch64-linux-gnu-",
       "CROSS_COMPILE": "aarch64-linux-gnu-",
-      "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-"
-    },
-    "withKernelSU": true
+      "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-",
+      "CROSS_COMPILE_COMPAT": "arm-linux-gnueabi-",
+      "CLANG_TRIPLE": "aarch64-linux-gnu-",
+      "AR": "llvm-ar",
+      "CC": "clang"
+    }
   }
 ]
