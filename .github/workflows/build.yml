@@ -112,23 +112,29 @@ jobs:
           fi
           echo "args=$args" >> $GITHUB_OUTPUT
 
-      - name: "😋 Update KernelSU"
+      - name: "⚙️ Inject Mystivara Tuning Tweaks"
         working-directory: ./${{ env.kernelDir }}
-        if: ${{ env.withKernelSU == 'true' }}
         run: |
-          curl -LSs "https://githubusercontent.com" | bash -s main
+          # Perintah kloning root dilewati karena parameter bernilai false.
+          # Kita langsung menyuntikkan tweaks racikan kustom ke init subsystem utama.
+          INIT_RC_FILE="./arch/arm64/configs/mystivara_init.rc"
           
-          if [ -f "./arch/arm64/configs/gki_defconfig" ]; then
-            TARGET_CONF="./arch/arm64/configs/gki_defconfig"
-          else
-            TARGET_CONF="./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}"
-          fi
-
-          if [ -f "$TARGET_CONF" ]; then
-            echo -e "\nCONFIG_KPROBES=y" >> $TARGET_CONF
-            echo -e "\nCONFIG_HAVE_KPROBES=y" >> $TARGET_CONF
-            echo -e "\nCONFIG_KPROBE_EVENTS=y" >> $TARGET_CONF
-          fi
+          echo "on property:sys.boot_completed=1" > $INIT_RC_FILE
+          echo "    write /proc/sys/vm/dirty_background_ratio 5" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/dirty_ratio 10" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/dirty_expire_centisecs 1500" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/dirty_writeback_centisecs 300" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/page-cluster 0" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/swappiness 60" >> $INIT_RC_FILE
+          echo "    write /proc/sys/vm/vfs_cache_pressure 60" >> $INIT_RC_FILE
+          
+          for dev in sda sdb sdc sdd sde sdf; do
+            echo "    write /sys/block/$dev/queue/nr_requests 256" >> $INIT_RC_FILE
+            echo "    write /sys/block/$dev/queue/add_random 0" >> $INIT_RC_FILE
+            echo "    write /sys/block/$dev/queue/iosched/low_latency 0" >> $INIT_RC_FILE
+            echo "    write /sys/block/$dev/queue/iosched/slice_idle 0" >> $INIT_RC_FILE
+            echo "    write /sys/block/$dev/queue/iosched/fifo_batch 8" >> $INIT_RC_FILE
+          done
 
       - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
