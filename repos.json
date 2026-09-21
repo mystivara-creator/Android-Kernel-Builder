@@ -31,4 +31,5 @@
       "KBUILD_BUILD_USER": "mystivara",
       "KBUILD_BUILD_HOST": "github-actions"
     }
+  }
 ]
