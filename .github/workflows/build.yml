@@ -1,11 +1,11 @@
 name: "Build kernels"
 
+on:
+  workflow_dispatch:
+
 env:
   CONFIGURATION: "repos.json"
   OUT_DIR: "out"
-
-on:
-  workflow_dispatch:
 
 jobs:
   Set-repos:
@@ -124,13 +124,19 @@ jobs:
             echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
           fi
 
-       - name: "👍 Make defconfig"
+      - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
         env:
           args: ${{ steps.generate-args.outputs.args }}
         run: |
           make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}
 
+      - name: "🎶 Build kernel"
+        working-directory: ./${{ env.kernelDir }}
+        env:
+          args: ${{ steps.generate-args.outputs.args }}
+        run: |
+          make ${args}
 
       - name: "💛 Upload Image"
         uses: actions/upload-artifact@v4
