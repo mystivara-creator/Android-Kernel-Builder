@@ -1,7 +1,7 @@
 [  {
     "kernelSource": {
       "name": "Mystivara-KernelSU",
-      "repo": "https://github.com/MiCode/Xiaomi_Kernel_OpenSource/tree/",
+      "repo": "https://github.com/micode/xiaomi_kernel_opensource",
       "branch": "kunzite-v-oss",
       "device": "kunzite"
     },
