@@ -36,14 +36,11 @@ jobs:
         repos: ${{ fromJSON(needs.Set-repos.outputs.repos) }}
     env:
       kernelDir: ${{ matrix.repos.kernelSource.name }}_${{ matrix.repos.kernelSource.device }}
-
       kernelName: ${{ matrix.repos.kernelSource.name }}
       kernelRepo: ${{ matrix.repos.kernelSource.repo }}
       kernelBranch: ${{ matrix.repos.kernelSource.branch }}
       kernelDevice: ${{ matrix.repos.kernelSource.device }}
-
       DEFCONFIG_NAME: ${{ matrix.repos.kernelSource.device }}_defconfig
-
       withKernelSU: ${{ matrix.repos.withKernelSU }}
     steps:
       - name: "✨ Create working dir"
@@ -54,13 +51,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential bc curl git zip ftp gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev lftp zstd wget libfl-dev python3 libarchive-tools jq
 
-      - name: "🌟 Clone kernel source => (${{ env.kernelRepo }})"
+      - name: "🌟 Clone kernel source"
         working-directory: ./${{ env.kernelDir }}
         run: |
-          git clone --recursive --branch $branch $repo . --depth=1
-        env:
-          branch: ${{ matrix.repos.kernelSource.branch }}
-          repo: ${{ matrix.repos.kernelSource.repo }}
+          git clone --recursive --branch "${{ env.kernelBranch }}" "${{ env.kernelRepo }}" . --depth=1
+          echo "=== MEMERIKSA ISI FOLDER KERNEL ==="
+          ls -la
 
       - name: "💫 Get toolchains"
         working-directory: ./${{ env.kernelDir }}
@@ -131,9 +127,9 @@ jobs:
 
           curl -LSs "https://githubusercontent.com" | bash -s main
 
-          echo -e "\nCONFIG_KPROBES=y" >> ./arch/${{ env.ARCH }}/configs/${{ env.DEFCONFIG_NAME }}
-          echo -e "\nCONFIG_HAVE_KPROBES=y" >> ./arch/${{ env.ARCH }}/configs/${{ env.DEFCONFIG_NAME }}
-          echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/${{ env.ARCH }}/configs/${{ env.DEFCONFIG_NAME }}
+          echo -e "\nCONFIG_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+          echo -e "\nCONFIG_HAVE_KPROBES=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
+          echo -e "\nCONFIG_KPROBE_EVENTS=y" >> ./arch/arm64/configs/${{ env.DEFCONFIG_NAME }}
 
       - name: "👍 Make defconfig"
         working-directory: ./${{ env.kernelDir }}
@@ -153,7 +149,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Image-${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }}
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/Image
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/Image
           if-no-files-found: ignore
           retention-days: 7
 
@@ -161,7 +157,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Image.gz-${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }}
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/Image.gz
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/Image.gz
           if-no-files-found: ignore
           retention-days: 7
 
@@ -169,7 +165,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dtb-${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }}
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtb
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/dtb
           if-no-files-found: ignore
           retention-days: 7
 
@@ -177,6 +173,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dtbo.img-${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }}
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/dtbo.img
           if-no-files-found: ignore
           retention-days: 7
