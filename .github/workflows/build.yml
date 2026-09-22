@@ -139,13 +139,16 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-      - name: "💙 Upload Image.gz"
+      - name: "📦 Compress kernel to LZ4"
+        working-directory: ./${{ env.kernelDir }}
+        run: |
+          lz4 -9 ./${{ env.OUT_DIR }}/arch/arm64/boot/Image ./${{ env.OUT_DIR }}/arch/arm64/boot/Image.lz4
+
+      - name: "🧡 Upload Image.lz4"
         uses: actions/upload-artifact@v4
         with:
-          name: Image.gz-${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }}
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/Image.gz
-          if-no-files-found: ignore
-          retention-days: 7
+          name: Image.lz4-${{ env.kernelDevice }}-${{ env.kernelName }}
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/arm64/boot/Image.lz4
 
       - name: "💜 Upload dtb"
         uses: actions/upload-artifact@v4
